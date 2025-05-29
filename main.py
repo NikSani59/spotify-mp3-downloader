@@ -16,7 +16,8 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
                      client_secret=client_secret
                      ))
 
-download_dir = os.path.expanduser('~/Documents/Personal/Songs/spotify_playlist')
+# Setting the download directory (you can change this to your preferred directory)
+download_dir = os.path.expanduser('~/Desktop')
 
 choice = input("Do you want to download a Spotify playlist or a single song? (1 for playlist, 2 for song): ").strip()
 

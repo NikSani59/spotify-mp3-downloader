@@ -18,28 +18,49 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
 
 download_dir = os.path.expanduser('~/Documents/Personal/Songs/spotify_playlist')
 
-playlist_url = input("Enter the Spotify playlist URL: ").strip()
+choice = input("Do you want to download a Spotify playlist or a single song? (1 for playlist, 2 for song): ").strip()
 
-res = sp.playlist_tracks(playlist_url)
+if choice == '1':
+    
+    playlist_url = input("Enter the Spotify playlist URL: ").strip()
 
-# Iterate through the tracks in the playlist and download them
-for item in res['items']:
-    if item['track'] is not None:
-        track = item["track"]
-        name = track["name"]
-        artist = track["artists"][0]["name"]
-        query = f"{name} {artist}"
+    res = sp.playlist_tracks(playlist_url)
 
-        print(f"Downloading: {query}")
+    # Iterate through the tracks in the playlist and download them
+    for item in res['items']:
+        if item['track'] is not None:
+            # Extracting track information
+            track = item["track"]
+            name = track["name"]
+            artist = track["artists"][0]["name"]
+            query = f"{name} {artist}"
 
-        subprocess.run([
+            print(f"Downloading: {query}")
+            
+            # Using yt-dlp to download the track as mp3
+            subprocess.run([
+            "yt-dlp",
+            "-x",
+            "--audio-format", "mp3",
+            "-o", os.path.join(download_dir, "%(title)s.%(ext)s"),
+            f"ytsearch1:{query}"
+        ])
+        else:
+            print("No track found in this item, skipping...")
+            
+elif choice == '2':
+    
+    # Ask user for song and artist
+    song = input("Enter song name: ").strip()
+    artist = input("Enter artist name: ").strip()
+    query = f"{song} {artist}"
+
+    print(f"Downloading: {query}")
+
+    subprocess.run([
         "yt-dlp",
         "-x",
         "--audio-format", "mp3",
         "-o", os.path.join(download_dir, "%(title)s.%(ext)s"),
         f"ytsearch1:{query}"
     ])
-    else:
-        print("No track found in this item, skipping...")
-        
-

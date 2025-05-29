@@ -16,7 +16,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
                      client_secret=client_secret
                      ))
 
-download_dir = os.path.expanduser('~/Documents/Personal/Songs')
+download_dir = os.path.expanduser('~/Documents/Personal/Songs/spotify_playlist')
 
 playlist_url = input("Enter the Spotify playlist URL: ").strip()
 
